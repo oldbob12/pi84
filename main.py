@@ -12,7 +12,8 @@ def evalCalculator(equation):
 def main():
 	
 	pygame.init()
-	
+	pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
+
 	textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(72,77,62))
 	
 	white = (255, 255, 255) 
@@ -21,9 +22,9 @@ def main():
 
 	lineEquations = []
 	lineAnswers = []
-	lineNum = 1
+	lineNum = 0
 
-	display_surface = pygame.display.set_mode((400, 400 ), pygame.FULLSCREEN) 
+	display_surface = pygame.display.set_mode((400, 400 )) 
 	font = pygame.font.Font('texas_instruments_ti84_series.ttf', 64)
 	
 	
@@ -48,7 +49,8 @@ def main():
 			print(lineEquations)
 			lineAnswers.append(evalCalculator(textinput.get_text()))
 			print(lineAnswers)
-			lineNum =+ 1
+			textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(72,77,62))
+			lineNum += 1
 			
 		i = 0
 		while i < len(lineAnswers):
@@ -58,11 +60,19 @@ def main():
 			text_rect.bottom = 138 + (128 * i)
 			display_surface.blit(text,text_rect) 
 			i += 1
+		i = 0
+		while i < len(lineEquations):
+			text = font.render(str(lineEquations[i]), True, (72,77,62) )
+			text_rect = text.get_rect()	
+			text_rect.bottom = 74 + (128 * i)
+			text_rect.left = 10
+			display_surface.blit(text,text_rect) 
+			i += 1
 			
 			
 		
 			# Blit its surface onto the screen
-		screen.blit(textinput.get_surface(), (10, 10))
+		screen.blit(textinput.get_surface(), (10, 10 + (128 * lineNum)))
 		
 		pygame.display.update()  
 		clock.tick(60)
