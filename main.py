@@ -14,7 +14,7 @@ def main():
 	pygame.init()
 	pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
 
-	textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(72,77,62))
+	textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(0,0,0))
 	
 	white = (255, 255, 255) 
 	green = (0, 255, 0) 
@@ -33,7 +33,7 @@ def main():
 	screen = pygame.display.set_mode((displayWidth,DisplayHeight))
 	clock = pygame.time.Clock()
 	
-	text = font.render('', True, (72,77,62) )
+	text = font.render('', True, (0,0,0) )
 	
 	running = True
 	
@@ -49,12 +49,12 @@ def main():
 			print(lineEquations)
 			lineAnswers.append(evalCalculator(textinput.get_text()))
 			print(lineAnswers)
-			textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(72,77,62))
+			textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(0,0,0))
 			lineNum += 1
 			
 		i = 0
 		while i < len(lineAnswers):
-			text = font.render(str(lineAnswers[i]), True, (72,77,62) )
+			text = font.render(str(lineAnswers[i]), True, (0,0,0) )
 			text_rect = text.get_rect()	
 			text_rect.right = displayWidth
 			text_rect.bottom = 138 + (128 * i)
@@ -62,7 +62,7 @@ def main():
 			i += 1
 		i = 0
 		while i < len(lineEquations):
-			text = font.render(str(lineEquations[i]), True, (72,77,62) )
+			text = font.render(str(lineEquations[i]), True, (0,0,0) )
 			text_rect = text.get_rect()	
 			text_rect.bottom = 74 + (128 * i)
 			text_rect.left = 10
