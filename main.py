@@ -33,46 +33,53 @@ def main():
 	screen = pygame.display.set_mode((displayWidth,DisplayHeight))
 	clock = pygame.time.Clock()
 	
-	text = font.render('', True, (0,0,0) )
+	textLineAnswers = font.render('', True, (0,0,0) )
+	textLineEquations = font.render('', True, (0,0,0) )
 	
 	running = True
 	
 	while running:
-		display_surface.fill((149, 161, 128) ) 
+		display_surface.fill((149, 161, 130) ) 
 		events = pygame.event.get()
 		for event in events:
 			if event.type == pygame.QUIT:
 				exit()
 				
-		if textinput.update(events):
+		if textinput.update(events) and textinput.get_text() != '':
 			lineEquations.append(textinput.get_text())
 			print(lineEquations)
 			lineAnswers.append(evalCalculator(textinput.get_text()))
 			print(lineAnswers)
 			textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(0,0,0))
 			lineNum += 1
+			print(lineNum)
 			
 		i = 0
 		while i < len(lineAnswers):
-			text = font.render(str(lineAnswers[i]), True, (0,0,0) )
-			text_rect = text.get_rect()	
-			text_rect.right = displayWidth
-			text_rect.bottom = 138 + (128 * i)
-			display_surface.blit(text,text_rect) 
-			i += 1
-		i = 0
-		while i < len(lineEquations):
-			text = font.render(str(lineEquations[i]), True, (0,0,0) )
-			text_rect = text.get_rect()	
-			text_rect.bottom = 74 + (128 * i)
-			text_rect.left = 10
-			display_surface.blit(text,text_rect) 
+			textLineAnswers = font.render(str(lineAnswers[i]), True, (0,0,0) )
+			textLineAnswers_rect = textLineAnswers.get_rect()	
+			textLineAnswers_rect.right = displayWidth
+			textLineEquations = font.render(str(lineEquations[i]), True, (0,0,0) )
+			textLineEquations_rect = textLineEquations.get_rect()
+			if lineNum < 3:
+				textLineAnswers_rect.bottom = 138 + (130 * i)
+				textLineEquations_rect.bottom = 74 + (130 * i)
+			else:
+				textLineAnswers_rect.bottom = 138 + (130 * i)  - (lineNum - 3) * 130
+				textLineEquations_rect.bottom = 74 + (130 * i) - (lineNum - 3) * 130
+			textLineEquations_rect.left = 10
+			display_surface.blit(textLineEquations,textLineEquations_rect) 
+			display_surface.blit(textLineAnswers,textLineAnswers_rect) 
 			i += 1
 			
 			
 		
+		
 			# Blit its surface onto the screen
-		screen.blit(textinput.get_surface(), (10, 10 + (128 * lineNum)))
+		if lineNum < 3:
+			screen.blit(textinput.get_surface(), (10, 10 + (130 * lineNum)))
+		else:
+			screen.blit(textinput.get_surface(), (10, 10 + (130 * 3)))
 		
 		pygame.display.update()  
 		clock.tick(60)
