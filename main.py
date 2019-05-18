@@ -23,6 +23,8 @@ def main():
 	lineEquations = []
 	lineAnswers = []
 	lineNum = 0
+	
+	ReturnValue = ''
 
 	display_surface = pygame.display.set_mode((400, 400 )) 
 	font = pygame.font.Font('texas_instruments_ti84_series.ttf', 64)
@@ -48,12 +50,13 @@ def main():
 		if textinput.update(events) and textinput.get_text() != '':
 			lineEquations.append(textinput.get_text())
 			print(lineEquations)
-			lineAnswers.append(evalCalculator(textinput.get_text()))
+			ReturnValue = textinput.get_text()
+			ReturnValue = ReturnValue.replace("^", "**")
+			lineAnswers.append(evalCalculator(ReturnValue))
 			print(lineAnswers)
 			textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(0,0,0))
 			lineNum += 1
 			print(lineNum)
-			
 		i = 0
 		while i < len(lineAnswers):
 			textLineAnswers = font.render(str(lineAnswers[i]), True, (0,0,0) )
@@ -71,8 +74,8 @@ def main():
 			display_surface.blit(textLineEquations,textLineEquations_rect) 
 			display_surface.blit(textLineAnswers,textLineAnswers_rect) 
 			i += 1
-			
-			
+		text_width = textLineAnswers.get_width()
+		pygame.draw.rect(display_surface,blue,(200,150, text_width,50))
 		
 		
 			# Blit its surface onto the screen
