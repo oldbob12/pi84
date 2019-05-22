@@ -18,12 +18,17 @@ def main():
 
 	class Equations:
 		line = []
+		xCor = []
 		yCor = []
+		textLength = []
 	class Answers:
 		line = []
+		xCor = []
 		yCor = []
+		textLength = []
 		
 	lineNum = 0
+	lineSelect = 0
 	
 	ReturnValue = ''
 
@@ -49,11 +54,16 @@ def main():
 				exit()
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_UP:
-					lineNum-=1
+					if lineSelect < len(Answers.line)*2:
+						lineSelect+=1
+					print(lineSelect)
 				if event.key == pygame.K_DOWN:
-					lineNum+=1
+					if lineSelect > 0:
+						lineSelect-=1
+					print(lineSelect*2)
 					
 		if textinput.update(events) and textinput.get_text() != '':
+			lineSelect = 0
 			Equations.line.append(textinput.get_text())
 			ReturnValue = textinput.get_text()
 			ReturnValue = ReturnValue.replace("^", "**")
@@ -61,23 +71,25 @@ def main():
 			textinput = pygame_textinput.TextInput('','texas_instruments_ti84_series.ttf',64,0,(0,0,0))
 			lineNum+=1
 			Equations.yCor = [0]*len(Answers.line)
+			Answers.xCor = [0]*len(Answers.line)
 			Answers.yCor = [0]*len(Answers.line)
+			Answers.textLength = [0]*len(Answers.line)
 			i = 0
 			while i < len(Answers.line):
 				if lineNum < 3:
-					Answers.yCor[i] = 90.5 + (130 * i)
-					Equations.yCor[i] = 17 + (130 * i)
+					Answers.yCor[i] = 77 + (135 * i)
+					Equations.yCor[i] = 12 + (135 * i)
 				else:
-					Answers.yCor[i] = 90.5 + (130 * i)  - (lineNum - 3) * 130
-					Equations.yCor[i] = 17 + (130 * i) - (lineNum - 3) * 130
+					Answers.yCor[i] = 77+ (135 * i)  - (lineNum - 3) * 135
+					Equations.yCor[i] = 12 + (135 * i) - (lineNum - 3) * 135
 				i+=1
-			print(Answers.yCor)
-			
+		if(lineSelect > 0 ):
+			pygame.draw.rect(display_surface,(25,86,105),(Answers.xCor[len(Answers.line)-lineSelect]-4,Answers.yCor[len(Answers.line)-lineSelect]-4, Answers.textLength[len(Answers.line)-lineSelect],65))
 		i = 0
 		while i < len(Answers.line):
 			textLineAnswers = font.render(str(Answers.line[i]), True, (0,0,0) )
 			textLineAnswers_rect = textLineAnswers.get_rect()	
-			textLineAnswers_rect.right = displayWidth
+			textLineAnswers_rect.right = displayWidth - 6
 			textLineEquations = font.render(str(Equations.line[i]), True, (0,0,0) )
 			textLineEquations_rect = textLineEquations.get_rect()
 			textLineEquations_rect.left = displayWidth
@@ -86,19 +98,17 @@ def main():
 			textLineEquations_rect.left = 10
 			display_surface.blit(textLineEquations,textLineEquations_rect)
 			display_surface.blit(textLineAnswers,textLineAnswers_rect)
-			
+			Answers.textLength[i] = textLineAnswers.get_width()
+			Answers.xCor[i] = textLineAnswers_rect.x
 			i += 1
 	
-
-	#text_width = textLineAnswers.get_width()
-		#pygame.draw.rect(display_surface,blue,(200,150, text_width,50))
 		
 		
 			# Blit its surface onto the screen
 		if lineNum < 3:
-			screen.blit(textinput.get_surface(), (10, 17 + (130 * lineNum)))
+			screen.blit(textinput.get_surface(), (10, 12 + (135 * lineNum)))
 		else:
-			screen.blit(textinput.get_surface(), (10, 17 + (130 * 3)))
+			screen.blit(textinput.get_surface(), (10, 12 + (135 * 3)))
 		
 		pygame.display.update()
 		clock.tick(60)
